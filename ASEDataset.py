@@ -3,6 +3,7 @@ from torch.utils.data import Dataset
 import numpy as np
 import copy
 
+# Test dataset for AOL
 class TestFileDataset(Dataset):
     def __init__(self, filename, tokenizer):
         super(TestFileDataset, self).__init__()
@@ -109,6 +110,7 @@ class TestFileDataset(Dataset):
     def __len__(self):
         return self._total_data
 
+# Test dataset for Tiangong-ST
 class TgTestFileDataset(Dataset):
     def __init__(self, filename, tokenizer):
         super(TgTestFileDataset, self).__init__()
@@ -213,6 +215,7 @@ class TgTestFileDataset(Dataset):
     def __len__(self):
         return self._total_data
 
+# Training dataset for AOL
 class TrainFileDataset(Dataset):
     def __init__(self, filename, tokenizer, dataset):
         super(TrainFileDataset, self).__init__()
@@ -320,22 +323,22 @@ class TrainFileDataset(Dataset):
 
             # Task identifiers for different tasks.
             
-            encoder_input_ids_rank[1] = self._tokenizer("[genq]")['input_ids'][1]
-            encoder_input_ids_gen_nq = copy.deepcopy(encoder_input_ids_rank)
+            encoder_input_ids_rank[1] = self._tokenizer("[genfq]")['input_ids'][1]
+            encoder_input_ids_gen_fq = copy.deepcopy(encoder_input_ids_rank)
 
             encoder_input_ids_rank[1] = self._tokenizer("[rank]")['input_ids'][1]
             encoder_input_ids_rank1 = copy.deepcopy(encoder_input_ids_rank)
             
-            encoder_input_ids_rank[1] = self._tokenizer("[gend]")['input_ids'][1]
+            encoder_input_ids_rank[1] = self._tokenizer("[gencd]")['input_ids'][1]
             encoder_input_ids_gen_cd = copy.deepcopy(encoder_input_ids_rank)
             
             encoder_input_ids_rank[1] = self._tokenizer("[gensq]")['input_ids'][1]
-            encoder_input_ids_gen_fq = copy.deepcopy(encoder_input_ids_rank)
+            encoder_input_ids_gen_sq = copy.deepcopy(encoder_input_ids_rank)
 
             batch = {
-                'encoder_input_ids_gen_nq': np.asarray(encoder_input_ids_gen_nq), 
-                'encoder_input_ids_gen_cd': np.asarray(encoder_input_ids_gen_cd), 
                 'encoder_input_ids_gen_fq': np.asarray(encoder_input_ids_gen_fq), 
+                'encoder_input_ids_gen_cd': np.asarray(encoder_input_ids_gen_cd), 
+                'encoder_input_ids_gen_sq': np.asarray(encoder_input_ids_gen_sq), 
                 'encoder_input_ids_rank': np.asarray(encoder_input_ids_rank1), 
                 'encode_attention_mask_rank': np.asarray(encode_attention_mask_rank),
                 'next_q_labels': np.asarray(next_q_labels, dtype=np.int64), 
@@ -467,6 +470,7 @@ class TrainFileDataset(Dataset):
     def __len__(self):
         return self._total_data
 
+# Training dataset for Tiangong-ST
 class TgTrainFileDataset(Dataset):
     def __init__(self, filename, tokenizer, dataset):
         super(TgTrainFileDataset, self).__init__()
@@ -552,7 +556,7 @@ class TgTrainFileDataset(Dataset):
     
     def __getitem__(self, idx):
         line = linecache.getline(self._filename, idx + 1)
-        label, num_neg, click_doc, next_q, previous_q, qd_pairs, docs, simq = split_3gen_2q(line)
+        label, num_neg, click_doc, next_q, previous_q, qd_pairs, docs, simq = split_3gen_2w(line)
 
         if len(docs) < num_neg+1:
             print(len(docs), docs, num_neg)
@@ -572,22 +576,22 @@ class TgTrainFileDataset(Dataset):
 
             encoder_input_ids_rank, encode_attention_mask_rank, eos_position = self.anno_main(qds)
             
-            encoder_input_ids_rank[1] = self._tokenizer("[genq]")['input_ids'][1]
-            encoder_input_ids_gen_nq = copy.deepcopy(encoder_input_ids_rank)
+            encoder_input_ids_rank[1] = self._tokenizer("[genfq]")['input_ids'][1]
+            encoder_input_ids_gen_fq = copy.deepcopy(encoder_input_ids_rank)
 
             encoder_input_ids_rank[1] = self._tokenizer("[rank]")['input_ids'][1]
             encoder_input_ids_rank1 = copy.deepcopy(encoder_input_ids_rank)
             
-            encoder_input_ids_rank[1] = self._tokenizer("[gend]")['input_ids'][1]
+            encoder_input_ids_rank[1] = self._tokenizer("[gencd]")['input_ids'][1]
             encoder_input_ids_gen_cd = copy.deepcopy(encoder_input_ids_rank)
             
             encoder_input_ids_rank[1] = self._tokenizer("[gensq]")['input_ids'][1]
-            encoder_input_ids_gen_fq = copy.deepcopy(encoder_input_ids_rank)
+            encoder_input_ids_gen_sq = copy.deepcopy(encoder_input_ids_rank)
 
             batch = {
-                'encoder_input_ids_gen_nq': np.asarray(encoder_input_ids_gen_nq), 
-                'encoder_input_ids_gen_cd': np.asarray(encoder_input_ids_gen_cd), 
                 'encoder_input_ids_gen_fq': np.asarray(encoder_input_ids_gen_fq), 
+                'encoder_input_ids_gen_cd': np.asarray(encoder_input_ids_gen_cd), 
+                'encoder_input_ids_gen_sq': np.asarray(encoder_input_ids_gen_sq), 
                 'encoder_input_ids_rank': np.asarray(encoder_input_ids_rank1), 
                 'encode_attention_mask_rank': np.asarray(encode_attention_mask_rank),
                 'next_q_labels': np.asarray(next_q_labels, dtype=np.int64), 

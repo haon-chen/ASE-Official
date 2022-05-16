@@ -73,9 +73,9 @@ class ASEModel(nn.Module):
             for batch in batch_data:
                 encoder_input_ids_rank = batch["encoder_input_ids_rank"]
                 encode_attention_mask_rank = batch["encode_attention_mask_rank"]
-                encoder_input_ids_gen_nq = batch["encoder_input_ids_gen_nq"]
-                encoder_input_ids_gen_cd = batch["encoder_input_ids_gen_cd"]
                 encoder_input_ids_gen_fq = batch["encoder_input_ids_gen_fq"]
+                encoder_input_ids_gen_cd = batch["encoder_input_ids_gen_cd"]
+                encoder_input_ids_gen_sq = batch["encoder_input_ids_gen_sq"]
                 eos_position = batch["eos_position"]
                 next_q_labels = batch["next_q_labels"]
                 click_doc_labels = batch["click_doc_labels"]
@@ -91,6 +91,7 @@ class ASEModel(nn.Module):
                 bart_outputs = self.model.model(**bart_inputs)
                 encoder_hidden = bart_outputs.encoder_last_hidden_state
 
+                # the ouput of [CLS].
                 classification_head_token = (eos_position == 1)
 
                 eos_hidden = encoder_hidden[classification_head_token,:]
@@ -99,10 +100,9 @@ class ASEModel(nn.Module):
 
                 # Generation Losses of three tasks.
 
-                gen_loss1 = self.generation_forward(encoder_input_ids_gen_nq, encode_attention_mask_rank, next_q_labels)
+                gen_loss1 = self.generation_forward(encoder_input_ids_gen_fq, encode_attention_mask_rank, next_q_labels)
                 gen_loss2 = self.generation_forward(encoder_input_ids_gen_cd, encode_attention_mask_rank, click_doc_labels)
-                gen_loss3 = self.generation_forward(encoder_input_ids_gen_fq, encode_attention_mask_rank, simq_labels)
-                #gen_loss3 = self.train_forward(encoder_input_ids_gen_fq, encode_attention_mask_rank, previous_q_labels)
+                gen_loss3 = self.generation_forward(encoder_input_ids_gen_sq, encode_attention_mask_rank, simq_labels)
 
                 gen_loss = self.weighted_loss(gen_loss1, 1) + self.weighted_loss(gen_loss2, 2) + self.weighted_loss(gen_loss3, 3)
 

@@ -88,10 +88,6 @@ parser.add_argument("--logging_steps",
                     default=500,
                     type=int,
                     help="Steps for logging.")
-parser.add_argument("--save_steps",
-                    default=1000,
-                    type=int,
-                    help="Saving steps")
 parser.add_argument("--eval_steps",
                     default=-1,
                     type=int,
@@ -134,8 +130,8 @@ tokenizer.add_tokens("[eos]")
 tokenizer.add_tokens("[empty_d]")
 tokenizer.add_tokens("[empty_q]")
 tokenizer.add_tokens("[rank]")
-tokenizer.add_tokens("[genq]")
-tokenizer.add_tokens("[gend]")
+tokenizer.add_tokens("[genfq]")
+tokenizer.add_tokens("[gencd]")
 tokenizer.add_tokens("[gensq]")
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(device)
@@ -149,7 +145,7 @@ args.score_file_path = score_file_prefix + "." +  args.score_file_path
 args.score_file_pre_path = score_file_prefix + "." +  args.score_file_pre_path
 print(args)
 
-# Datas.
+# Data.
 train_data = "./data/" + args.dataset + "/train.txt"
 dev_data = "./data/" + args.dataset + "/dev.txt"
 test_data = "./data/" + args.dataset + "/test.txt"
@@ -168,9 +164,9 @@ def set_seed(seed=args.seed):
 # Train.
 def train_model():
     config = BartConfig.from_pretrained(args.config_name)
-    dialogpt = BartForConditionalGeneration.from_pretrained(args.model_name_or_path, config=config)
-    dialogpt.resize_token_embeddings(len(tokenizer))
-    model = ASEModel(dialogpt, tokenizer)
+    bart = BartForConditionalGeneration.from_pretrained(args.model_name_or_path, config=config)
+    bart.resize_token_embeddings(len(tokenizer))
+    model = ASEModel(bart, tokenizer)
     n_params = sum([p.numel() for p in model.parameters() if p.requires_grad])
     print("* number of parameters: %d" % n_params)
     model = model.to(device)
@@ -230,13 +226,6 @@ def fit(model, X_train, X_test):
                 tmp_loss = total_loss
                 tmp_gen_loss = total_gen_loss
                 tmp_rank_loss = total_rank_loss
-            if step > 0 and args.save_steps > 0 and step % args.save_steps == 0:
-                output_dir = os.path.join(args.ckp_path, 'checkpoint-{}'.format(global_step))
-                if not os.path.exists(output_dir):
-                    os.makedirs(output_dir)
-                print("Saving model checkpoint to %s", output_dir)
-                model_name = os.path.join(output_dir, ASEModel.__name__)
-                torch.save(model.state_dict(), model_name)
             if args.do_eval and step > 0 and args.eval_steps > 0 and step % args.eval_steps == 0:
                 print(args.eval_steps)
                 print("Step = {:d}\tStart Evaluation".format(step, scheduler.get_lr()[0]))
