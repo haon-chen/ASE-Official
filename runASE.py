@@ -5,10 +5,10 @@ import numpy as np
 import os
 from tqdm import tqdm 
 from torch.utils.data import DataLoader
-from PairFileDataset import TestFileDataset, TrainFileDataset, TgTestFileDataset, TgTrainFileDataset
+from ASEDataset import TestFileDataset, TrainFileDataset, TgTestFileDataset, TgTrainFileDataset
 
 from Trec_Metrics import Metrics
-from pair_model import ASEModel
+from ASE_model import ASEModel
 from transformers import AdamW, get_linear_schedule_with_warmup, BartConfig, BartTokenizer, BartForConditionalGeneration, BertTokenizer
 
 def str2bool(v):

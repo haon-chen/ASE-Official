@@ -15,11 +15,11 @@ To ensure anonymity, we will cite the source of some codes later.
   - To ensure anonymity, we will provide the preprocessed dataset later.
 
 ## Run
-- For correlation with user satisfaction on FSD:
+- For Training:
 ```
-python ./run_fsd_experiments.py
+python runASE.py --dataset aol/tiangong --do_train True --do_eval True
 ```
-- For intuitiveness on NST:
+- For Testing:
 ```
-python ./run_nst_experiments.py
+python runASE.py --dataset aol/tiangong --do_train False --do_eval True
 ```
