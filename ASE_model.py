@@ -83,7 +83,7 @@ class ASEModel(nn.Module):
                 simq_labels = batch["simq_labels"]
                 loss_mask = batch["loss_mask"]
 
-                # Ranking Loss
+                # Ranking
 
                 bart_inputs = {'input_ids': encoder_input_ids_rank, 'attention_mask': encode_attention_mask_rank, 
                 'output_hidden_states': True}
@@ -108,6 +108,8 @@ class ASEModel(nn.Module):
 
                 gen_losses.append(gen_loss)
             
+            # Ranking Loss
+
             batch_scores = torch.cat(scores, dim = -1)
             ranking_loss = self.hinge_loss(batch_scores, 1, loss_mask)
             w_ranking_loss = self.weighted_loss(ranking_loss, 0)

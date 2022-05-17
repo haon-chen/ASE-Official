@@ -13,7 +13,7 @@ To ensure anonymity, we will cite the source of some codes later.
 ## Usage
 - data 
   - To ensure anonymity, we will provide the preprocessed dataset later.
-- Prepare pretrained BERT
+- Prepare pretrained BART
   - [BARTBase](https://huggingface.co/facebook/bart-base)
   - [BartChinese](https://huggingface.co/fnlp/bart-base-chinese)  
   - Save to the "pretrained_model" directory
