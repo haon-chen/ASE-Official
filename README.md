@@ -1,6 +1,6 @@
 # ASE4Review
 
-This anonymous repository contains the source code for the CIKM 2022 submission "Auto-Session-Encoder: Utilizing Invisible Sequences to Model Session Context".
+This anonymous repository contains the source code for the CIKM 2022 submission "Enhancing User Behavior Sequence Modeling by Generative Tasks for Session Search".
 
 To ensure anonymity, we will cite the source of some codes later.
 
