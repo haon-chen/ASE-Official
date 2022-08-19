@@ -1,0 +1,2 @@
+# training data example (w=2)
+label(0/1)   num_neg(neg doc num)    click_doc(current clicked doc)  next_doc(next clicked doc)    next_q1  next_q2 previous_q1 previous_q2 qd_pairs(history+current query)    docs(candidates)    simq(supplemental query)

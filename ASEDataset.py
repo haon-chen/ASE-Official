@@ -103,6 +103,7 @@ class TestFileDataset(Dataset):
             'encoder_input_ids_rank': np.asarray(encoder_input_ids_rank), 
             'encode_attention_mask_rank': np.asarray(encode_attention_mask_rank),
             'eos_position': np.asarray(eos_position, dtype=np.int64),
+            'ranking_labels': float(label),
         }
 
         return batch
@@ -208,6 +209,7 @@ class TgTestFileDataset(Dataset):
             'encoder_input_ids_rank': np.asarray(encoder_input_ids_rank), 
             'encode_attention_mask_rank': np.asarray(encode_attention_mask_rank),
             'eos_position': np.asarray(eos_position, dtype=np.int64),
+            'ranking_labels': float(label),
         }
 
         return batch

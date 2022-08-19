@@ -22,6 +22,11 @@ class ASEModel(nn.Module):
         init.xavier_normal_(self.classification_head.dense.weight)
         init.xavier_normal_(self.classification_head.out_proj.weight)
 
+        self.classifier = nn.Linear(768, 1)
+        self.relu = nn.ReLU()
+        self.tanh = nn.Tanh()
+        self.dropout = nn.Dropout(0.1)
+
     def generation_forward(self, encoder_input_ids, encode_attention_mask, labels):
         
         # obtain generation loss
