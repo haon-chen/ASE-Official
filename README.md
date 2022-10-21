@@ -38,12 +38,12 @@ python runASE.py --dataset aol --do_train False --do_eval True
 ## Citations
 If you use the code, please cite the following paper:  
 ```
-@inproceedings{CDZCCW2022TOIS,
-    author = {Chen, Haonan and Dou*, Zhicheng and Zhu, Yutao and Cao, Zhao and Cheng, Xiaohua and Wen, Ji-Rong},
-    title = {Enhancing User Behavior Sequence Modeling by Generative Tasks for Session Search},
-    booktitle = {{CIKM} '22: Proceedings of the 31st ACM International Conference on Information and Knowledge Management,  Atlanta, GA, USA, October 17-21, 2022},
-    publisher = {{ACM}},
-    year      = {2021},
-    doi = {10.1145/3511808.3557310}
+@inproceedings{CDZCCW2022CIKM,
+author = {Chen, Haonan and Dou, Zhicheng and Zhu, Yutao and Cao, Zhao and Cheng, Xiaohua and Wen, Ji-Rong},
+title = {Enhancing User Behavior Sequence Modeling by Generative Tasks for Session Search},
+year = {2022},
+url = {https://doi.org/10.1145/3511808.3557310},
+doi = {10.1145/3511808.3557310},
+pages = {180–190},
 }
 ```
